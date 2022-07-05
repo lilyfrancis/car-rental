@@ -3,8 +3,8 @@ class Api::V1::CarsController < ApplicationController
   before_action :admin, only: %i[create update destroy]
 
   def index
-    car = Car.all
-    render json: car, status: 200
+    @car = Car.all
+    render json: JSON.pretty_generate(@car.as_json)
   end
 
   def show
@@ -16,7 +16,7 @@ class Api::V1::CarsController < ApplicationController
     car = Car.new(car_params)
     car.user_id = @user.id
     if car.save
-      render json: car
+      render json: JSON.pretty_generate(car.as_json)
     elsif car.errors.messages
       render json: { errors: car.errors.messages }
     else
@@ -47,7 +47,7 @@ class Api::V1::CarsController < ApplicationController
   end
 
   def car_params
-    params.require(:car).permit(:name, :description, :price, :pictures, :reserved)
+    params.require(:car).permit(:name, :description, :price)
   end
 
   def admin

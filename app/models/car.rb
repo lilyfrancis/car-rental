@@ -1,8 +1,6 @@
 class Car < ApplicationRecord
-  has_many :reservations, dependent: :destroy
+  has_one :reservation
   belongs_to :user
 
-  has_one_attached :pictures
-
-  validates :name, :description, :price, presence: true
+  has_many_attached :pictures
 end
